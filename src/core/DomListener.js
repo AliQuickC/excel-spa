@@ -1,4 +1,4 @@
-import {capitalize} from "@core/utils";
+import {capitalize} from '@core/utils';
 
 export class DomListener {
   constructor($root, listeners = []) {
@@ -15,17 +15,17 @@ export class DomListener {
       // внутри стрелочной ф-ции, контекст this сохраняется
       const method = getMethodName(listener) // формирование имени события
 
-      if (!this[method]) {  // проверяем, что для события с именем method в объекте(DOM элемент),
-                            //  есть метод, обработчик такого события
-        const name = this.name || ''  // имя DOM элемента, если было указано в конструкторе, при создании
+      if (!this[method]) { // проверяем, что для события с именем method в объекте(DOM элемент),
+        //  есть метод, обработчик такого события
+        const name = this.name || '' // имя DOM элемента, если было указано в конструкторе, при создании
         throw new Error(
-          `Method ${method} is not implemented in ${name} Component`
+            `Method ${method} is not implemented in ${name} Component`
         )
       }
 
       this.[method] = this[method].bind(this) // привязка контекста this к методу
       this.$root.on(listener, this[method]) // добавляет обрвботчик this[method], для события listener,
-                                            // DOM элементу(this.$root), обернутого объектом Dom
+      // DOM элементу(this.$root), обернутого объектом Dom
     })
   }
 
@@ -34,8 +34,8 @@ export class DomListener {
     this.listeners.forEach(listener => { // перебор массива со списком событий
       const method = getMethodName(listener) // формирование имени события
 
-      this.$root.off(listener, this[method])  // удаляет обрвботчик this[method], для события listener,
-                                              // DOM элементу(this.$root), обернутого объектом Dom
+      this.$root.off(listener, this[method]) // удаляет обрвботчик this[method], для события listener,
+      // DOM элементу(this.$root), обернутого объектом Dom
     })
   }
 }

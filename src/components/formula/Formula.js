@@ -1,17 +1,17 @@
-import {ExcelComponent} from "@core/ExcelComponent";
+import {ExcelComponent} from '@core/ExcelComponent';
 
 export class Formula extends ExcelComponent {
   static className = 'excel__formula'
 
-    constructor($root) {
-        super($root, {
-            name: 'Formula',
-            listeners: ['input', 'click']
-        })
+  constructor($root) {
+    super($root, {
+      name: 'Formula',
+      listeners: ['input', 'click']
+    })
 
-      // this.onInput = this.onInput.bind(this)
-      // this.onClick = this.onClick.bind(this)
-    }
+    // this.onInput = this.onInput.bind(this)
+    // this.onClick = this.onClick.bind(this)
+  }
 
   toHTML() {
     return `
@@ -20,6 +20,7 @@ export class Formula extends ExcelComponent {
         `
   }
 
+  // eslint-disable-next-line require-jsdoc
   onInput(event) {
     // console.log(this.$root)
     // console.log(event.target.textContent)
