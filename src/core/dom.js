@@ -41,6 +41,29 @@ class Dom {
     }
     return this
   }
+
+  get data() { // доступ к дата атрибутам
+    return this.$el.dataset
+  }
+
+  closest(selector) { // возвращает родительский элемент
+    return $(this.$el.closest(selector))
+  }
+
+  getCoords() { // возвращает объект с данными о местоположении элемента и т.д.
+    return this.$el.getBoundingClientRect()
+  }
+
+  findAll(selector) {
+    return this.$el.querySelectorAll(selector)
+  }
+
+  css(styles = {}) { // преобразует стили из объекта в css свойство
+    Object
+        .keys(styles)
+        .forEach(key => {this.$el.style[key] = styles[key]
+        })
+  }
 }
 
 // оборачивает DOM элемент в объект

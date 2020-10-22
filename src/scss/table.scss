@@ -18,6 +18,7 @@
 
   .row-info {
     display: flex;
+    position: relative;
     justify-content: center;
     align-items: center;
     min-width: $info-cell-width;
@@ -33,6 +34,7 @@
 
   .column {
     display: flex;
+    position: relative;
     justify-content: center;
     align-items: center;
     background: #f8f9fa;
@@ -64,4 +66,33 @@
     }
   }
 
+  .col-resize, .row-resize  {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    background: $primary-color;
+    z-index: 10;
+    &:hover {
+      opacity: 1 !important;
+    }
+  }
+
+  .col-resize {
+    top: 0;
+    width: 4px;
+
+    &:hover {
+      cursor: col-resize;
+    }
+  }
+
+  .row-resize {
+    left: 0;
+    height: 4px;
+
+    &:hover {
+      cursor: row-resize;
+    }
+  }
 }
