@@ -6,12 +6,16 @@
     "node": true
   },
   "rules": {
-    "semi": off,
-    "arrow-parens": off,
-    "comma-dangle": off,
-    "max-len": off,
-    "require-jsdoc": off,
-    linebreak-style: ["error", "windows"]
+    "semi": "off",
+    "arrow-parens": "off",
+    "comma-dangle": "off",
+    "max-len": "off",
+    "require-jsdoc": "off",
+    "no-undef": "off",
+    "brace-style": "off",
+    "name expectid": "off",
+//    "no-unused-vars": "off",
+    "linebreak-style": ["error", "windows"]
   },
   "extends": ["eslint:recommended", "google"]
 }

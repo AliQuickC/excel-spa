@@ -9,7 +9,7 @@ export class DomListener {
     this.listeners = listeners // массив событий, для текущего элемента
   }
 
-  // добавляет для текущего DOM элемента, обработчики событий, из списка событий, в массиве this.listeners
+  // добавляет, для текущего DOM элемента, обработчики событий, из списка событий, в массиве this.listeners
   initDOMListeners() {
     this.listeners.forEach(listener => { // перебор массива со списком событий
       // внутри стрелочной ф-ции, контекст this сохраняется
@@ -23,7 +23,7 @@ export class DomListener {
         )
       }
 
-      this.[method] = this[method].bind(this) // привязка контекста this к методу
+      this[method] = this[method].bind(this) // привязка контекста this к методу
       this.$root.on(listener, this[method]) // добавляет обрвботчик this[method], для события listener,
       // DOM элементу(this.$root), обернутого объектом Dom
     })
