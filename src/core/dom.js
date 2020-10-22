@@ -29,6 +29,10 @@ class Dom {
     this.$el.removeEventListener(eventType, callback)
   }
 
+  find(selector) {
+    return $(this.$el.querySelector(selector))
+  }
+
   append(node) {
     if (node instanceof Dom) { // если node является инстанцом класса Dom,
       node = node.$el // node присваиваем Dom элемент,
@@ -54,7 +58,7 @@ class Dom {
     return this.$el.getBoundingClientRect()
   }
 
-  findAll(selector) {
+  findAll(selector) { // ищет ячейки по селектору
     return this.$el.querySelectorAll(selector)
   }
 
@@ -63,6 +67,14 @@ class Dom {
         .keys(styles)
         .forEach(key => {this.$el.style[key] = styles[key]
         })
+  }
+
+  addClass(className) {
+    this.$el.classList.add(className)
+  }
+
+  removeClass(className) {
+    this.$el.classList.remove(className)
   }
 }
 

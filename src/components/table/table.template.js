@@ -4,10 +4,19 @@ const CODES = {
 }
 
 // ячейки таблици
-function toCell(_, col) {
-  return `
-    <div class="cell" contenteditable data-col="${col}"></div>
-  `
+function toCell(row) {
+  // row попадает в замыкание
+  return function(_, col) {
+    return `
+      <div 
+        class="cell" 
+        contenteditable 
+        data-col="${col}"
+        data-type="cell"
+        data-id="${row}:${col}" 
+      ></div>
+    `
+  }
 }
 
 // ячейки первой строки таблици
@@ -53,14 +62,14 @@ export function createTable(rowsCount = 15) {
   rows.push(createRow(null, cols))
 
   //  формируем ячейки для остальных строк
-  for (let i = 0; i < rowsCount; i++) { // перебор строк
+  for (let row = 0; row < rowsCount; row++) { // перебор строк
     const cells = new Array(colsCount) // для текущей сроки формируем массив ячеек
         .fill('') // массив пустых строк, для каждой ячейки, текущей стороки
-        .map(toCell) // для каждого элемента массива формируем верстку ячейки
+        .map(toCell(row)) // для каждого элемента массива формируем верстку ячейки
         .join('') // склеиваем верстку всех ячеек в одну строку
 
     // добавляем строку полученную на текущей итерации в массив
-    rows.push(createRow(i + 1, cells))
+    rows.push(createRow(row + 1, cells))
   }
 
   // вывод верстки всей таблици
