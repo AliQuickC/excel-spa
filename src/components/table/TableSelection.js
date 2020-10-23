@@ -3,14 +3,16 @@ export class TableSelection {
 
   constructor() {
     this.group = []
+    this.current = null
   }
 
   // выделение ячейки
   // $el - объект класса Dom
   select($el) {
     this.clear()
-    this.group.push($el)
     $el.addClass(TableSelection.className)
+    this.group.push($el)
+    this.current = $el
   }
 
   clear() { // очистка выделения ячеек
@@ -18,6 +20,10 @@ export class TableSelection {
     this.group = []
   }
 
-  selectGroup() {
+  selectGroup($group = []) {
+    this.clear()
+
+    this.group = $group
+    this.group.forEach($el => $el.addClass(TableSelection.className))
   }
 }
