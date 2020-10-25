@@ -5,7 +5,7 @@ export class DomListener {
     if (!$root) {
       throw new Error(`No $root provided for DomListener`)
     }
-    this.$root = $root
+    this.$root = $root // объект класса Dom
     this.listeners = listeners // массив событий, для текущего элемента
   }
 

@@ -15,6 +15,17 @@ class Dom {
     return this.$el.outerHTML.trim()
   }
 
+  text(text) {
+    if (typeof text === 'string') {
+      this.$el.textContent = text
+      return this
+    }
+    if (this.$el.tagName.toLowerCase() == 'input') {
+      return this.$el.value.trim()
+    }
+    return this.$el.textContent.trim()
+  }
+
   // очищает содержимое DOM элемента
   clear() {
     this.html('')
@@ -27,6 +38,10 @@ class Dom {
 
   off(eventType, callback) { // удаляет обрвботчик callback, для события eventType, DOM элемента, внутри объекта Dom
     this.$el.removeEventListener(eventType, callback)
+  }
+
+  find(selector) { // находит элемент по указанному селектору
+    return $(this.$el.querySelector(selector))
   }
 
   append(node) {
@@ -54,7 +69,7 @@ class Dom {
     return this.$el.getBoundingClientRect()
   }
 
-  findAll(selector) {
+  findAll(selector) { // ищет ячейки по селектору
     return this.$el.querySelectorAll(selector)
   }
 
@@ -63,6 +78,33 @@ class Dom {
         .keys(styles)
         .forEach(key => {this.$el.style[key] = styles[key]
         })
+  }
+
+  id(parse) {
+    if (parse) { // если true
+      const parsed = this.id().split(':')
+      return { // объект с координатами ячейки
+        row: +parsed[0],
+        col: +parsed[1]
+      }
+    }
+    // data - геттер
+    return this.data.id // дата атрибуту id
+  }
+
+  focus() { // фокус на элемент при выделении
+    this.$el.focus()
+    return this
+  }
+
+  addClass(className) {
+    this.$el.classList.add(className)
+    return this
+  }
+
+  removeClass(className) {
+    this.$el.classList.remove(className)
+    return this
   }
 }
 
