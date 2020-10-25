@@ -1,4 +1,5 @@
 import {$} from '@core/dom';
+import {Emiter} from '@core/Emiter'
 
 export class Excel {
   constructor(selector, options) {
@@ -6,19 +7,25 @@ export class Excel {
     this.components = options.components || [] // массив (строк) DOM элементов(компонентов),
     // которые будут добавлены внутрь текущего элемента
     // после запуска getRoot() элементы массива превращаются в объекты
+
+    this.emitter = new Emiter()
   }
 
   getRoot() {
     const $root = $.create('div', 'excel')
-    //  $root - объект класса Dom, является оберткой для DOM элемента с классом 'excel'
+    //  $root - объект класса Dom, является оберткой для DOM элемента с class='excel'
+
+    const componentOptions = {emitter: this.emitter}
 
     this.components = this.components.map(Component => { // перебирает массив компонентов(массив классов, для создания элементов)
       // вместо массива классов, создает массив объектов
+
       const $el = $.create('div', Component.className) // $el - обертка класса Dom, с div внутри
       // заготовка для будующего элемента (компоненты)
       // с css классами Component.className, прописанными в классе DOM элемента (компоненты)
       // затем оборачивает DOM элемент в объект класса Dom
-      const component = new Component($el) // в component - создает объект "Типа" на основе класса
+      const component = new Component($el, componentOptions)
+      // в component - создает объект "Типа" на основе класса
       // передается объект $el класса Dom, с div внутри, конструктору элемента (компоненты)
 
       $el.html(component.toHTML()) // метод html класса Dom, внедряет в элемент div верстку элемента (компоненты),
@@ -27,7 +34,7 @@ export class Excel {
       // в корневую компоненту $root (элемент, обернутый объектом класса Dom)
       return component // в массив записывается объект
     })
-    return $root // компонент Excel, обернутый в объект класса Dom
+    return $root // компонент class="excel", обернутый в объект класса Dom
   }
 
 
@@ -40,5 +47,9 @@ export class Excel {
     // запуск инициализации для каждого
     // добавляет для текущего DOM элемента, обработчики событий,
     // из списка событий, в массиве this.listeners, текущего DOM элемента
+  }
+
+  destroy() {
+    this.components.forEach(component => component.destroy())
   }
 }
