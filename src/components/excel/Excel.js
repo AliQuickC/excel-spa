@@ -37,7 +37,6 @@ export class Excel {
     return $root // компонент class="excel", обернутый в объект класса Dom
   }
 
-
   render() {
     // this.$el - '#app', this.getRoot() - Excel, обернутый в объект класса Dom
     this.$el.append(this.getRoot()) // вставляет DOM элемент Excel на страниуцу, в корневой элемент '#app',
