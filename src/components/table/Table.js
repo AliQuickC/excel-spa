@@ -4,6 +4,8 @@ import {createTable} from '@/components/table/table.template'
 import {resizeHandler} from '@/components/table/table.resize'
 import {isCell, matrix, nextSelector, shouldResize} from '@/components/table/table.functions'
 import {TableSelection} from '@/components/table/TableSelection'
+// import * as actions from '@/redux/actions'
+import {TABLE_RESIZE} from '@/redux/types'
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
@@ -17,7 +19,7 @@ export class Table extends ExcelComponent {
   }
 
   toHTML() {
-    return createTable(20)
+    return createTable(20, this.store.getState())
   }
 
   prepare() { // запускается в конструкторе родительского класса
@@ -43,18 +45,36 @@ export class Table extends ExcelComponent {
     this.$on('formula:done', () => { // добавить обработчик событий
       this.selection.current.focus()
     })
+
+    this.$subscribe(state => {
+      console.log('TableState', state )
+    })
   }
 
+  // выбор ячейки
   selectCell($cell) {
     this.selection.select($cell) // делаем ячейку выбранной
     this.$emit('table:select', $cell) // событие выбор ячейки
     // при открытии документа
+    // this.$dispatch({type: 'TEST'})
+    // console.log('storeSub', this.storeSub)
+  }
+
+  async resizeTable(event) {
+    try {
+      const data = await resizeHandler(this.$root, event) // обработка ресайза таблици
+      // this.$dispatch(actions.tableResize(data)) // передаем в ф-цию экшн креатер
+      this.$dispatch({type: TABLE_RESIZE, data}) // передаем в ф-цию экшн креатер
+      console.log('Resize data: ', data)
+    } catch (e) {
+      console.warn('Resize error', e.message)
+    }
   }
 
   onMousedown(event) {
     if (shouldResize(event)) { // если событие произошло на маркере ресайза,
       // на элементе с дата атрибутом data-resize
-      resizeHandler(this.$root, event) // обработка ресайза таблици
+      this.resizeTable(event)
     } else if (isCell(event)) { // если событие произошло на ячейке
       const $target = $(event.target)
 

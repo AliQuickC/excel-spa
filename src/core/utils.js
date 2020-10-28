@@ -14,3 +14,11 @@ export function range(start, end) {
       .fill('')
       .map((_, index) => start + index)
 }
+
+export function storage(key, data = null) {
+  if (!data) {
+    // console.log(data)
+    return JSON.parse(localStorage.getItem(key)) // считываем значение 'excel-state'
+  }
+  localStorage.setItem(key, JSON.stringify(data)) // записываем
+}

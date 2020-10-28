@@ -35,6 +35,10 @@ export class Formula extends ExcelComponent {
     this.$on('table:input', $cell => { // добавить обработчик событий
       this.$formula.text($cell.text())
     })
+
+    // this.$subscribe(state => {
+    //   console.log('FormulaState', state )
+    // })
   }
 
   // eslint-disable-next-line require-jsdoc

@@ -8,6 +8,7 @@ export class Excel {
     // которые будут добавлены внутрь текущего элемента
     // после запуска getRoot() элементы массива превращаются в объекты
 
+    this.store = options.store
     this.emitter = new Emiter()
   }
 
@@ -15,7 +16,10 @@ export class Excel {
     const $root = $.create('div', 'excel')
     //  $root - объект класса Dom, является оберткой для DOM элемента с class='excel'
 
-    const componentOptions = {emitter: this.emitter}
+    const componentOptions = {
+      emitter: this.emitter,
+      store: this.store
+    }
 
     this.components = this.components.map(Component => { // перебирает массив компонентов(массив классов, для создания элементов)
       // вместо массива классов, создает массив объектов
