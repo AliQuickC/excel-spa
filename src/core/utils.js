@@ -16,9 +16,8 @@ export function range(start, end) {
 }
 
 export function storage(key, data = null) {
-  if (!data) {
-    // console.log(data)
+  if (!data) { // если нет данных
     return JSON.parse(localStorage.getItem(key)) // считываем значение 'excel-state'
   }
-  localStorage.setItem(key, JSON.stringify(data)) // записываем
+  localStorage.setItem(key, JSON.stringify(data)) // записываем data в local store
 }

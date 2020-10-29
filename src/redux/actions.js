@@ -1,4 +1,4 @@
-import {TABLE_RESIZE} from '@/redux/types'
+import {TABLE_RESIZE} from './types'
 
 // Action Creator
 export function tableResize(data) {

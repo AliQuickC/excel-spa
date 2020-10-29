@@ -4,8 +4,8 @@ import {createTable} from '@/components/table/table.template'
 import {resizeHandler} from '@/components/table/table.resize'
 import {isCell, matrix, nextSelector, shouldResize} from '@/components/table/table.functions'
 import {TableSelection} from '@/components/table/TableSelection'
-// import * as actions from '@/redux/actions'
-import {TABLE_RESIZE} from '@/redux/types'
+import * as actions from '@/redux/actions'
+// import {TABLE_RESIZE} from '@/redux/types'
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
@@ -46,9 +46,9 @@ export class Table extends ExcelComponent {
       this.selection.current.focus()
     })
 
-    this.$subscribe(state => {
-      console.log('TableState', state )
-    })
+    // this.$subscribe(state => {
+    //   console.log('TableState', state )
+    // })
   }
 
   // выбор ячейки
@@ -63,8 +63,9 @@ export class Table extends ExcelComponent {
   async resizeTable(event) {
     try {
       const data = await resizeHandler(this.$root, event) // обработка ресайза таблици
-      // this.$dispatch(actions.tableResize(data)) // передаем в ф-цию экшн креатер
-      this.$dispatch({type: TABLE_RESIZE, data}) // передаем в ф-цию экшн креатер
+      this.$dispatch(actions.tableResize(data)) // передаем в ф-цию экшн креатер
+      // обработка изменения state
+      // this.$dispatch({type: TABLE_RESIZE, data}) // передаем в ф-цию экшн креатер
       console.log('Resize data: ', data)
     } catch (e) {
       console.warn('Resize error', e.message)

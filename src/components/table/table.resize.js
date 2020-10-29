@@ -42,11 +42,13 @@ export function resizeHandler($root, event) {
         $parent.css({height: value + 'px'})
       }
 
+      // console.log($parent.data)
+
       resolve({
         value, // размер изменяемой ячейки
-        // type, // тип родительского элемента, строка или колонка
-        id: type === 'col' ? $parent.data.col : null // считываем номер ячейки из дата атрибута
-        // id: $parent.data[type]
+        type, // тип родительского элемента, строка/колонка
+        // id: type === 'col' ? $parent.data.col : null // считываем номер ячейки из дата атрибута
+        id: $parent.data[type]
       })
 
       $resizer.css({

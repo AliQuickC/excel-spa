@@ -6,19 +6,20 @@ import {Formula} from '@/components/formula/Formula'
 import {Table} from '@/components/table/Table'
 import {createStore} from '@core/createStore'
 import {rootReducer} from '@/redux/rootReduser'
-// import {storage} from '@core/utils'
+import {storage} from '@core/utils'
+import {initialState} from '@/redux/initialState'
 
-const store = createStore(rootReducer, {
-  colState: {}
-}
-    // , storage('excel-state')
+const store = createStore(rootReducer
+    // , {colState: {}} // инициализация store
+    // , storage('excel-state') // прочитать store из local storage
+    , initialState
 )
 
-// store.subscribe(state => {
-//   console.log('App State: ', state)
-//   localStorage.setItem('excel-state', JSON.stringify(state))
-//   // storage('excel-state', state)
-// })
+store.subscribe(state => {
+  console.log('App State: ', state)
+  // localStorage.setItem('excel-state', JSON.stringify(state))
+  storage('excel-state', state) // записываем state в local store
+})
 
 
 // получает как свойство, элемент '#app' со страници, '#app' оборачивает в объект класса Dom

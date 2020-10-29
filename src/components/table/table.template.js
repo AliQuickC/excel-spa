@@ -4,16 +4,21 @@ const CODES = {
 }
 
 const DEFAULT_WIDTH = 120
+const DEFAULT_HEIGHT = 24
 
 function getWidth(state, index) {
   return (state[index] || DEFAULT_WIDTH) + 'px'
+}
+
+function getHeight(state, index) {
+  return (state[index] || DEFAULT_HEIGHT) + 'px'
 }
 
 // ячейки таблици
 function toCell(state, row) {
   // row попадает в замыкание
   return function(_, col) {
-    const width = getWidth(state.colState, col) // ширина столбца + px
+    const width = getWidth(state, col) // ширина столбца + px
     return `
       <div 
         class="cell" 
@@ -38,10 +43,11 @@ function toColumn({col, index, width}) {
 }
 
 // создание строки таблици
-function createRow(index, content) {
+function createRow(index, content, state) {
   const resizer = index ? '<div class="row-resize" data-resize="row"></div>' : ''
+  const height = getHeight(state, index)
   return `
-    <div class="row" data-type="resizable">
+    <div class="row" data-type="resizable" data-row="${index}" style="height: ${height}">
       <div class="row-info"> <!--вертикальные ячейки с номерами строк-->
         ${index ? index : ''}
         ${resizer} <!-- маркер для изсменения размера строк-->
@@ -84,17 +90,17 @@ export function createTable(rowsCount = 15, state= {}) {
       .join('') // склеиваем верстку всех ячеек в одну строку
 
   // создаем верхнюю строку, пустая ячейка + ячейки с буквами столбцов
-  rows.push(createRow(null, cols))
+  rows.push(createRow(null, cols, {}))
 
   //  формируем ячейки для остальных строк
   for (let row = 0; row < rowsCount; row++) { // перебор строк
     const cells = new Array(colsCount) // для текущей сроки формируем массив ячеек
         .fill('') // массив пустых строк, для каждой ячейки, текущей стороки
-        .map(toCell(state, row)) // для каждого элемента массива(ячейки) формируем верстку ячейки
+        .map(toCell(state.colState, row)) // для каждого элемента массива(ячейки) формируем верстку ячейки
         .join('') // склеиваем верстку всех ячеек в одну строку
 
     // добавляем строку полученную на текущей итерации в массив
-    rows.push(createRow(row + 1, cells))
+    rows.push(createRow(row + 1, cells, state.rowState))
   }
 
   // вывод верстки всей таблици
