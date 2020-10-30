@@ -15,13 +15,13 @@ class Dom {
     return this.$el.outerHTML.trim()
   }
 
-  text(text) {
-    if (typeof text === 'string') {
-      this.$el.textContent = text
+  text(text) { // заполняет содержимое элемента текстом
+    if (typeof text === 'string') { // если в элемент введен текст
+      this.$el.textContent = text //  меняем свойство textContent (текстовое содержимое элемента)
       return this
     }
-    if (this.$el.tagName.toLowerCase() == 'input') {
-      return this.$el.value.trim()
+    if (this.$el.tagName.toLowerCase() === 'input') { // если элемент типа input
+      return this.$el.value.trim() //                // меняем свойство value
     }
     return this.$el.textContent.trim()
   }

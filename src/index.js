@@ -10,13 +10,13 @@ import {storage} from '@core/utils'
 import {initialState} from '@/redux/initialState'
 
 const store = createStore(rootReducer
-    // , {colState: {}} // инициализация store
+    // , {colState: {}}
     // , storage('excel-state') // прочитать store из local storage
-    , initialState
+    , initialState // инициализация store
 )
 
 store.subscribe(state => {
-  console.log('App State: ', state)
+  // console.log('App State: ', state)
   // localStorage.setItem('excel-state', JSON.stringify(state))
   storage('excel-state', state) // записываем state в local store
 })

@@ -5,7 +5,6 @@ import {resizeHandler} from '@/components/table/table.resize'
 import {isCell, matrix, nextSelector, shouldResize} from '@/components/table/table.functions'
 import {TableSelection} from '@/components/table/TableSelection'
 import * as actions from '@/redux/actions'
-// import {TABLE_RESIZE} from '@/redux/types'
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
@@ -23,7 +22,7 @@ export class Table extends ExcelComponent {
   }
 
   prepare() { // запускается в конструкторе родительского класса
-    this.selection = new TableSelection()
+    this.selection = new TableSelection() // объект реализует логику выделения ячейки/ячеек
   }
 
   init() {
@@ -38,11 +37,12 @@ export class Table extends ExcelComponent {
     // this.$emit('table:select', $cell) // событие выбор ячейки
     // // при открытии документа
 
-    this.$on('formula:input', text => { // добавить обработчик событий
+    this.$on('formula:input', text => { // добавить обработчик события, input в формуле
       this.selection.current.text(text)
+      this.updateTextInStore(text)
     })
 
-    this.$on('formula:done', () => { // добавить обработчик событий
+    this.$on('formula:done', () => { // добавить обработчик события, смена фокуса
       this.selection.current.focus()
     })
 
@@ -54,7 +54,7 @@ export class Table extends ExcelComponent {
   // выбор ячейки
   selectCell($cell) {
     this.selection.select($cell) // делаем ячейку выбранной
-    this.$emit('table:select', $cell) // событие выбор ячейки
+    this.$emit('table:select', $cell) // вызов события, выбор ячейки
     // при открытии документа
     // this.$dispatch({type: 'TEST'})
     // console.log('storeSub', this.storeSub)
@@ -63,10 +63,9 @@ export class Table extends ExcelComponent {
   async resizeTable(event) {
     try {
       const data = await resizeHandler(this.$root, event) // обработка ресайза таблици
-      this.$dispatch(actions.tableResize(data)) // передаем в ф-цию экшн креатер
-      // обработка изменения state
-      // this.$dispatch({type: TABLE_RESIZE, data}) // передаем в ф-цию экшн креатер
-      console.log('Resize data: ', data)
+      this.$dispatch(actions.tableResize(data)) // сработка события, изменение state
+      //                                        // передаем в ф-цию экшн креатер
+      // console.log('Resize data: ', data)
     } catch (e) {
       console.warn('Resize error', e.message)
     }
@@ -113,8 +112,20 @@ export class Table extends ExcelComponent {
     }
   }
 
-  onInput(event) {
-    this.$emit('table:input', $(event.target))
+  updateTextInStore(value) {
+    this.$dispatch(actions.changeText({ // сработка события, изменение state
+      id: this.selection.current.id(),
+      value
+    }))
+  }
+
+  onInput(event) { // добавить обработчик события, input в таблице
+    // this.$emit('table:input', $(event.target)) // вызов обработки события
+    // this.$dispatch(actions.changeText({ // сработка события, изменение state
+    //   id: this.selection.current.id(),
+    //   value: $(event.target).text()
+    // }))
+    this.updateTextInStore($(event.target).text())
   }
 }
 

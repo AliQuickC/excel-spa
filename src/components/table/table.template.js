@@ -18,16 +18,18 @@ function getHeight(state, index) {
 function toCell(state, row) {
   // row попадает в замыкание
   return function(_, col) {
-    const width = getWidth(state, col) // ширина столбца + px
+    const id = `${row}:${col}`
+    const width = getWidth(state.colState, col) // ширина столбца + px
+    const data = state.dataState[id]
     return `
       <div 
         class="cell" 
         contenteditable 
         data-col="${col}"
         data-type="cell"
-        data-id="${row}:${col}" 
+        data-id= "${id}"
         style="width: ${width}"
-      ></div>
+      >${data || ''}</div>
     `
   }
 }
@@ -96,7 +98,7 @@ export function createTable(rowsCount = 15, state= {}) {
   for (let row = 0; row < rowsCount; row++) { // перебор строк
     const cells = new Array(colsCount) // для текущей сроки формируем массив ячеек
         .fill('') // массив пустых строк, для каждой ячейки, текущей стороки
-        .map(toCell(state.colState, row)) // для каждого элемента массива(ячейки) формируем верстку ячейки
+        .map(toCell(state, row)) // для каждого элемента массива(ячейки) формируем верстку ячейки
         .join('') // склеиваем верстку всех ячеек в одну строку
 
     // добавляем строку полученную на текущей итерации в массив

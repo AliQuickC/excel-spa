@@ -32,13 +32,14 @@ export class Formula extends ExcelComponent {
       // console.log($cell.text())
     })
 
-    this.$on('table:input', $cell => { // добавить обработчик событий
-      this.$formula.text($cell.text())
-    })
-
-    // this.$subscribe(state => {
-    //   console.log('FormulaState', state )
+    // this.$on('table:input', $cell => { // добавить обработчик событий
+    //   this.$formula.text($cell.text())
     // })
+
+    this.$subscribe(state => {
+      // console.log('Formula update', state.currentText )
+      this.$formula.text(state.currentText)
+    })
   }
 
   // eslint-disable-next-line require-jsdoc
@@ -52,7 +53,7 @@ export class Formula extends ExcelComponent {
     const keys = ['Enter', 'Tab']
     if (keys.includes(event.key)) {
       event.preventDefault()
-      this.$emit('formula:done')
+      this.$emit('formula:done') // вызов события
     }
   }
 }
