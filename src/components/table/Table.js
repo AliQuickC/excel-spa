@@ -32,14 +32,14 @@ export class Table extends ExcelComponent {
     const $cell = this.$root.find('[data-id="0:0"]') // ищет ячейку в нативном элементе excel__table
     // this.selection - объект класса TableSelection
 
-    this.selectCell($cell)
-    // this.selection.select($cell) // делаем ячейку выбранной
+    this.selectCell($cell) // делаем ячейку выбранной
+    //                     // при открытии документа
+    // this.selection.select($cell)
     // this.$emit('table:select', $cell) // событие выбор ячейки
-    // // при открытии документа
 
-    this.$on('formula:input', text => { // добавить обработчик события, input в формуле
-      this.selection.current.text(text)
-      this.updateTextInStore(text)
+    this.$on('formula:input', text => { // добавить обработчик события, если в формуле input
+      this.selection.current.text(text) //       // обновить данные в ячейке
+      this.updateTextInStore(text) //            // обновление данных в state
     })
 
     this.$on('formula:done', () => { // добавить обработчик события, смена фокуса
@@ -112,8 +112,9 @@ export class Table extends ExcelComponent {
     }
   }
 
-  updateTextInStore(value) {
-    this.$dispatch(actions.changeText({ // сработка события, изменение state
+  updateTextInStore(value) { // обновление данных в state
+    this.$dispatch(actions.changeText({ // сработка события, изменение state, меняет currentText и dataState
+      //                                     // обработчик дублирует данные в формуле
       id: this.selection.current.id(),
       value
     }))
@@ -121,11 +122,8 @@ export class Table extends ExcelComponent {
 
   onInput(event) { // добавить обработчик события, input в таблице
     // this.$emit('table:input', $(event.target)) // вызов обработки события
-    // this.$dispatch(actions.changeText({ // сработка события, изменение state
-    //   id: this.selection.current.id(),
-    //   value: $(event.target).text()
-    // }))
-    this.updateTextInStore($(event.target).text())
+    this.updateTextInStore($(event.target).text()) // обновление данных в state
+    //                                             // обновление данных в формуле
   }
 }
 

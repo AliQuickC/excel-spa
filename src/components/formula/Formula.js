@@ -27,7 +27,7 @@ export class Formula extends ExcelComponent {
 
     this.$formula = this.$root.find('#formula') // ищем элемент по id
 
-    this.$on('table:select', $cell => { // добавить обработчик событий
+    this.$on('table:select', $cell => { // добавить обработчик события
       this.$formula.text($cell.text())
       // console.log($cell.text())
     })
@@ -36,9 +36,9 @@ export class Formula extends ExcelComponent {
     //   this.$formula.text($cell.text())
     // })
 
-    this.$subscribe(state => {
+    this.$subscribe(state => { // добавить обработчик события, изменение state, меняем данные в формуле
       // console.log('Formula update', state.currentText )
-      this.$formula.text(state.currentText)
+      this.$formula.text(state.currentText) // меняем данные в формуле
     })
   }
 
@@ -46,7 +46,8 @@ export class Formula extends ExcelComponent {
   onInput(event) {
     // console.log(this.$root)
     // console.log(event.target.textContent)
-    this.$emit('formula:input', $(event.target).text()) // вызов события
+    this.$emit('formula:input', $(event.target).text()) // вызов события, при вводе в формулу,
+    //                                                        // дублирует данные в ячейку таблици, обновляет state
   }
 
   onKeydown(event) {

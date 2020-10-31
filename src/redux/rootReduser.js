@@ -15,7 +15,7 @@ export function rootReducer(state, action) {
     case CHANGE_TEXT:
       prevState = state['dataState'] || {}
       prevState[action.data.id] = action.data.value // добавляем свойство объекту state.dataState.id
-      return {...state, currentText: action.data.value, dataState: prevState}
+      return {...state, currentText: action.data.value, dataState: prevState} // меняет currentText и dataState
     default: return state
   }
 }
