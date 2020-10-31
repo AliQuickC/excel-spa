@@ -8,6 +8,7 @@ export class Formula extends ExcelComponent {
     super($root, {
       name: 'Formula',
       listeners: ['input', 'keydown'],
+      subscribe: ['currentText'],
       ...options
     })
 
@@ -36,13 +37,17 @@ export class Formula extends ExcelComponent {
     //   this.$formula.text($cell.text())
     // })
 
-    this.$subscribe(state => { // добавить обработчик события, изменение state, меняем данные в формуле
-      // console.log('Formula update', state.currentText )
-      this.$formula.text(state.currentText) // меняем данные в формуле
-    })
+    // this.$subscribe(state => { // добавить обработчик события, изменение state, меняем данные в формуле
+    //   // console.log('Formula update', state.currentText )
+    //   this.$formula.text(state.currentText) // меняем данные в формуле
+    // })
   }
 
-  // eslint-disable-next-line require-jsdoc
+  storeChanged({currentText}) {
+    this.$formula.text(currentText)
+    // console.log('changes', changes)
+  }
+
   onInput(event) {
     // console.log(this.$root)
     // console.log(event.target.textContent)

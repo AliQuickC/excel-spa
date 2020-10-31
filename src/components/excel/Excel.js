@@ -1,5 +1,6 @@
-import {$} from '@core/dom';
+import {$} from '@core/dom'
 import {Emiter} from '@core/Emiter'
+import {StoreSubscriber} from '@core/StoreSubscriber'
 
 export class Excel {
   constructor(selector, options) {
@@ -10,6 +11,7 @@ export class Excel {
 
     this.store = options.store
     this.emitter = new Emiter()
+    this.subscriber = new StoreSubscriber(this.store)
   }
 
   getRoot() {
@@ -46,6 +48,9 @@ export class Excel {
     this.$el.append(this.getRoot()) // вставляет DOM элемент Excel на страниуцу, в корневой элемент '#app',
     // меетодом append(объекта класса Dom)
     // предварительно компонент Excel заполняется дочерними компонентами
+
+    this.subscriber.subscribeComponents(this.components)
+
     this.components.forEach(component => component.init()) // перебор DOM элемнтов(компонентов),
     // запуск инициализации для каждого
     // добавляет для текущего DOM элемента, обработчики событий,
@@ -53,6 +58,7 @@ export class Excel {
   }
 
   destroy() {
+    this.subscriber.unsubscribeFromStore()
     this.components.forEach(component => component.destroy())
   }
 }

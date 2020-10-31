@@ -17,7 +17,7 @@ export function createStore(rootReducer, initialState = {}) {
       // отработка подписок на изменение state
     },
     getState() {
-      return state
+      return JSON.parse(JSON.stringify(state)) // клонируем объект, для избежания мутации
     }
   }
 }

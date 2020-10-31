@@ -21,3 +21,10 @@ export function storage(key, data = null) {
   }
   localStorage.setItem(key, JSON.stringify(data)) // записываем data в local store
 }
+
+export function isEqual(a, b) {
+  if (typeof a === 'object' && typeof b === 'object') {
+    return JSON.stringify(a) === JSON.stringify(b) // преобразуем объект к строке
+  }
+  return a === b
+}

@@ -45,10 +45,6 @@ export class Table extends ExcelComponent {
     this.$on('formula:done', () => { // добавить обработчик события, смена фокуса
       this.selection.current.focus()
     })
-
-    // this.$subscribe(state => {
-    //   console.log('TableState', state )
-    // })
   }
 
   // выбор ячейки
