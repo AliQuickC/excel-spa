@@ -15,9 +15,8 @@ const store = createStore(rootReducer
     , initialState // инициализация store
 )
 
-store.subscribe(state => {
+store.subscribe(state => { // добавить обработчик события, изменение state, пишем данные в local storege
   // console.log('App State: ', state)
-  // localStorage.setItem('excel-state', JSON.stringify(state))
   storage('excel-state', state) // записываем state в local store
 })
 

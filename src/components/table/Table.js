@@ -5,6 +5,7 @@ import {resizeHandler} from '@/components/table/table.resize'
 import {isCell, matrix, nextSelector, shouldResize} from '@/components/table/table.functions'
 import {TableSelection} from '@/components/table/TableSelection'
 import * as actions from '@/redux/actions'
+import {defaultStyles} from '@/constants'
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
@@ -45,6 +46,12 @@ export class Table extends ExcelComponent {
     this.$on('formula:done', () => { // добавить обработчик события, смена фокуса
       this.selection.current.focus()
     })
+
+    this.$on('toolbar: applyStyle', style => { // добавляет обработчик события,
+      //                                                // изменение стиля в тулбаре, кнопками
+      this.selection.applyStyle(style)
+      // console.log('applyStyle', style)
+    })
   }
 
   // выбор ячейки
@@ -53,7 +60,8 @@ export class Table extends ExcelComponent {
     this.$emit('table:select', $cell) // вызов события, выбор ячейки
     // при открытии документа
     // this.$dispatch({type: 'TEST'})
-    // console.log('storeSub', this.storeSub)
+
+    console.log($cell.getStyles(Object.keys(defaultStyles)))
   }
 
   async resizeTable(event) {

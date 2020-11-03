@@ -8,7 +8,7 @@ export class Formula extends ExcelComponent {
     super($root, {
       name: 'Formula',
       listeners: ['input', 'keydown'],
-      subscribe: ['currentText'],
+      subscribe: ['currentText'], // подписка на изменение state
       ...options
     })
 

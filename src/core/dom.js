@@ -80,6 +80,13 @@ class Dom {
         })
   }
 
+  getStyles(styles = []) { // преобразует массиы стилей в объект со стилями
+    return styles.reduce((res, s) => {
+      res[s] = this.$el.style[s]
+      return res
+    }, {})
+  }
+
   id(parse) {
     if (parse) { // если true
       const parsed = this.id().split(':')

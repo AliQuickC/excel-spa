@@ -7,7 +7,7 @@ export class StoreSubscriber {
     this.prevState = {}
   }
 
-  subscribeComponents(components) {
+  subscribeComponents(components) { // подписка на компоненты
     this.prevState = this.store.getState() // предыдущий state
 
     this.sub = this.store.subscribe(state => { // подписка на изменение state
@@ -15,7 +15,7 @@ export class StoreSubscriber {
         if (!isEqual(this.prevState[key], state[key])) { // сравниваем состояние state, предыдущее и сейчас,
           //                                             // если есть различия
           components.forEach(component => { // перебираем массив объектов
-            if (component.isWatching(key)) { // если такой ключ есть у объекта(компоненты),
+            if (component.isWatching(key)) { // если ключ объекта state, есть у объекта(компоненты),
               //                                       // в массиве параметров, передаваемых в конструктор this.subscribe
               //                                       // каждый элемент массива, название поля в объекте state
               const changes = {[key]: state[key]} // изменения state
@@ -24,8 +24,7 @@ export class StoreSubscriber {
           })
         }
       })
-
-      this.prevState = this.store.getState()
+      this.prevState = this.store.getState() // обновляем состояние предидущего state
     })
   }
 

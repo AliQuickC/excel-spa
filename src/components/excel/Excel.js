@@ -49,7 +49,7 @@ export class Excel {
     // меетодом append(объекта класса Dom)
     // предварительно компонент Excel заполняется дочерними компонентами
 
-    this.subscriber.subscribeComponents(this.components)
+    this.subscriber.subscribeComponents(this.components) // подписываемся на изменение state компоненты
 
     this.components.forEach(component => component.init()) // перебор DOM элемнтов(компонентов),
     // запуск инициализации для каждого
