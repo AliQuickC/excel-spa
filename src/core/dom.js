@@ -89,15 +89,15 @@ class Dom {
   }
 
   id(parse) {
-    if (parse) { // если true
-      const parsed = this.id().split(':')
+    if (parse) { // если true, возвращаем объект с координатами ячейки
+      const parsed = this.id().split(':') // разбираем строку на массив
       return { // объект с координатами ячейки
         row: +parsed[0],
         col: +parsed[1]
       }
     }
     // data - геттер
-    return this.data.id // дата атрибуту id
+    return this.data.id // считываем и возвращаем, дата атрибут data-id
   }
 
   focus() { // фокус на элемент при выделении

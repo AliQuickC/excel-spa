@@ -6,7 +6,7 @@ export function rootReducer(state, action) {
   // let prevState
   // console.log('Action', action)
   // console.log('state', state)
-  let field
+  let field // ключ state
   switch (action.type) {
     case TABLE_RESIZE:
       field = action.data.type === 'col' ? 'colState' : 'rowState'
@@ -34,8 +34,9 @@ export function rootReducer(state, action) {
   }
 }
 
+// возвращает новое значение, части объекта state.
 function value(state, field, action) {
-  const val = state[field] || {} // предыдущее состояние state для столбца или колонки
+  const val = state[field] || {} // часть объекта state, полученная по ключу field
   val[action.data.id] = action.data.value // добавляем свойство объекту
   // Math.round()
   // console.log(action.data.value )

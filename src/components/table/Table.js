@@ -18,7 +18,7 @@ export class Table extends ExcelComponent {
     })
   }
 
-  toHTML() {
+  toHTML() { // вывод верстки таблици
     return createTable(20, this.store.getState())
   }
 
@@ -38,17 +38,18 @@ export class Table extends ExcelComponent {
     // this.selection - объект класса TableSelection
 
     this.$on('formula:input', text => { // добавить обработчик события, если в формуле input
-      this.selection.current.text(text) //       // обновить данные в ячейке
-      this.updateTextInStore(text) //            // обновление данных в state
-    })
+      this.selection.current.text(text) //       // обновить данные в выделенной ячейке
+      this.updateTextInStore(text) //            // обновление данных в state,
+    }) //                                        // отобразить измененный компонент, в соответствии с измененным state
 
-    this.$on('formula:done', () => { // добавить обработчик события, смена фокуса
-      this.selection.current.focus()
+    this.$on('formula:done', () => { // добавить обработчик события,
+      //                                      // при вводе в формуле Enter или Tab
+      this.selection.current.focus()//        // смена фокуса из формулы на активную ячейку,
     })
 
     this.$on('toolbar: applyStyle', style => { // добавляет обработчик события,
       //                                                // изменение стиля в тулбаре, кнопками
-      this.selection.applyStyle(style)
+      this.selection.applyStyle(style) //               // применить стиль из объекта style, к выделенным ячейкам
       // console.log('applyStyle', style)
     })
   }
@@ -57,23 +58,28 @@ export class Table extends ExcelComponent {
   selectCell($cell) {
     this.selection.select($cell) // делаем ячейку выбранной, $cell - объект класса Dom
 
-    this.$emit('table:select', $cell) // вызов события, выбор ячейки
-    // при выборе ячейки в таблице, дублировать значение в формуле
+    this.$emit('table:select', $cell) // вызов события, выбор ячейки, при выборе ячейки в таблице,
+    //  дублировать значение, в формуле содержимое ячейки, в кнопках тулбара состояние стилей.
 
     const styles = $cell.getStyles(Object.keys(defaultStyles)) // считываем стили у выбранной ячейки, в объект
-    // Object.keys(defaultStyles) - массив ключей(css свойств)
-    console.log(styles)
+    // styles - объект со всеми стилями для выделенной ячейки, Object.keys(defaultStyles) - массив ключей(css свойств)
+    // console.log(styles)
 
     // сработка события, изменение state
     this.$dispatch(actions.changeStyles(styles)) // передаем объект со стилями styles,
-    //                                           // меняем свйство currentStyles в state
+    //                                           // меняем свйство currentStyles в state(rootReducer)
+    //                                           // для компонент подписанных на изменение state(subscribeComponents),
+    //                                           // storeChanged() Отображаем в соответствии с новым state
   }
 
   async resizeTable(event) {
     try {
       const data = await resizeHandler(this.$root, event) // обработка ресайза таблици
-      this.$dispatch(actions.tableResize(data)) // сработка события, изменение state
+      this.$dispatch(actions.tableResize(data)) // когда ресайз закончен, сработка события, изменение state
       //                                        // передаем в ф-цию экшн креатер
+      //                                        // меняем свйство 'colState' или 'rowState' в state(rootReducer)
+      //                                        // для компонент подписанных на изменение state(subscribeComponents),
+      //                                        // storeChanged() Отображаем в соответствии с новым state
       // console.log('Resize data: ', data)
     } catch (e) {
       console.warn('Resize error', e.message)
@@ -81,9 +87,8 @@ export class Table extends ExcelComponent {
   }
 
   onMousedown(event) {
-    if (shouldResize(event)) { // если событие произошло на маркере ресайза,
-      // на элементе с дата атрибутом data-resize
-      this.resizeTable(event)
+    if (shouldResize(event)) { // если событие произошло на маркере ресайза, и у элемента есть дата атрибут data-resize
+      this.resizeTable(event) // обработка ресайза таблици
     } else if (isCell(event)) { // если событие произошло на ячейке
       const $target = $(event.target)
 
@@ -101,18 +106,19 @@ export class Table extends ExcelComponent {
     }
   }
 
-  onKeydown(event) {
+  onKeydown(event) { // нажата одна из кнопок навигации по ячейкам таблици
     const keys = ['Enter', 'Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
 
-    const {key} = event
+    const {key} = event // кнопка по которой сработало событие
 
     if (keys.includes(key) && !event.shiftKey) { // если нажата кнопка, и при этом не была зажата shift
       event.preventDefault()
 
       const id = this.selection.current.id(true) // текущая ячейка (объект с координатами ячейки)
-      const $next = this.$root.find(nextSelector(key, id))
+      const $next = this.$root.find(nextSelector(key, id)) // определяем ячейку, куда надо перейти
 
-      this.selectCell($next)
+      this.selectCell($next) // устанавливаем ячейку как выбранную
+
       // $next элемент(ячейка) на которую осуществляется переход
       // nextSelector определяет ячейку для перемещения после нажатия
       // this.selection.select($next)
@@ -122,10 +128,12 @@ export class Table extends ExcelComponent {
   }
 
   updateTextInStore(value) { // обновление данных в state
-    this.$dispatch(actions.changeText({ // сработка события, изменение state, меняет currentText и dataState
-      //                                     // обработчик дублирует данные в формуле
-      id: this.selection.current.id(),
-      value
+    this.$dispatch(actions.changeText({ // сработка события, изменение state,
+      //                                     // меняет currentText и dataState в state(rootReducer)
+      //                                     // для компонент подписанных на изменение state(subscribeComponents),
+      //                                     // storeChanged() Отображаем в соответствии с новым state (данные в формуле)
+      id: this.selection.current.id(), // получаем из выделенной ячейки, значение data-id, id() метод класса Dom
+      value //                         // содержимое ячейки
     }))
   }
 

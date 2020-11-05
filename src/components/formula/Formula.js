@@ -16,7 +16,7 @@ export class Formula extends ExcelComponent {
     // this.onClick = this.onClick.bind(this)
   }
 
-  toHTML() {
+  toHTML() { // вывод верстки поля формулы
     return `
       <div class="info">fx</div>
       <div id="formula" class="input" contenteditable spellcheck="false"></div>
@@ -43,8 +43,8 @@ export class Formula extends ExcelComponent {
     // })
   }
 
-  storeChanged({currentText}) {
-    this.$formula.text(currentText)
+  storeChanged({currentText}) { // сработка события изменение state
+    this.$formula.text(currentText) // дублимруем содержимое выделенной ячейки в формуле
     // console.log('changes', changes)
   }
 
@@ -57,9 +57,9 @@ export class Formula extends ExcelComponent {
 
   onKeydown(event) {
     const keys = ['Enter', 'Tab']
-    if (keys.includes(event.key)) {
+    if (keys.includes(event.key)) { // если нажпата одна из кнопок 'Enter' или 'Tab'
       event.preventDefault()
-      this.$emit('formula:done') // вызов события
+      this.$emit('formula:done') // вызов события, смена фокуса из формулы на активную ячейку
     }
   }
 }

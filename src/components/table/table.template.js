@@ -23,10 +23,11 @@ function toCell(state, row) {
   return function(_, col) {
     const id = `${row}:${col}`
     const width = getWidth(state.colState, col) // ширина столбца + px
-    const data = state.dataState[id]
-    const styles = Object.keys(defaultStyles)
-        .map(key => `${camelToDasheCase(key)}: ${defaultStyles[key]}`)
-        .join(';')
+    const data = state.dataState[id] // содержимое ячейки
+    const styles = Object.keys(defaultStyles) // список всех стилей какие есть, преобразуем в массив
+        .map(key => `${camelToDasheCase(key)}: ${defaultStyles[key]}`) // camelToDasheCase - меняет стиль написания ключей объекта
+        //         // формируем массив строк, из "css свойство" : "значение"
+        .join(';') // собираем массив в одну строку
     return `
       <div 
         class="cell" 
@@ -77,7 +78,7 @@ function widthWidthFrom(state) {
   }
 }
 
-export function createTable(rowsCount = 15, state= {}) {
+export function createTable(rowsCount = 15, state= {}) { // вывод верстки таблици
   // console.log(state)
   const colsCount = CODES.Z - CODES.A + 1 // количество столбцов в таблице
   const rows = []

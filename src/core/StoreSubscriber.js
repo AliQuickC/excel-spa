@@ -19,7 +19,7 @@ export class StoreSubscriber {
               //                         // передаваемом(параметр options.subscribe) в конструктор, объекта(компоненты),
               //                         // каждый элемент массива, название поля в объекте state
               const changes = {[key]: state[key]} // сохраняем новое значение state, для ключа key
-              component.storeChanged(changes) //  // объект "Типа" отображаем в соответствии с новым state
+              component.storeChanged(changes) //  // Отображаем в соответствии с новым state, компонент(объект "Типа")
             }
           })
         }

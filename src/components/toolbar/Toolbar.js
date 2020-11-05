@@ -23,7 +23,7 @@ export class Toolbar extends ExcelStateComponent {
     return createToolbar(this.state)
   }
 
-  toHTML() {
+  toHTML() { // вывод верстки тулбара с кнопками
     return this.template
   }
 
@@ -34,14 +34,15 @@ export class Toolbar extends ExcelStateComponent {
 
   onClick(event) {
     const $target = $(event.target)
-    // $target.addClass('active')
-    if ($target.data.type === 'button') {
-      const value = JSON.parse($target.data.value) // считываем из data атрибута объект с css свойствами
-      this.$emit('toolbar: applyStyle', value) // сработка события, изменить стиль
+    if ($target.data.type === 'button') { // если data-type === "button"
+      const value = JSON.parse($target.data.value) // data-value хранит css свойство, за которое отвечает кнопка,
+      //                                           // считываем его, преобразуем в объект
+      // console.log(value)
+      this.$emit('toolbar: applyStyle', value) // сработка события, изменить стиль в таблице
 
       // const key = Object.keys(value)[0] // считываем у свойства с индексом 0, название ключа(имя css свойства)
       // this.setState({[key]: value[key]}) // меняем state, записываем в объект ключ и значение(css свойство и значение)
-      console.log(this.state)
+      // console.log(this.state)
     }
   }
 }

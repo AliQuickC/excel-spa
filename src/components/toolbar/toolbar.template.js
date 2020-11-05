@@ -15,7 +15,7 @@ function toButton(button) {
   `
 }
 
-export function createToolbar(s) {
+export function createToolbar(s) { // вывод верстки тулбара с кнопками
   // console.log('render')
   const buttons = [
     {

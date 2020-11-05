@@ -27,7 +27,7 @@ export class TableSelection {
     this.group.forEach($el => $el.addClass(TableSelection.className))
   }
 
-  applyStyle(style) {
+  applyStyle(style) { // применяет стили из объекта style, для выделенных ячееек this.group
     this.group.forEach($el => $el.css(style))
   }
 }
