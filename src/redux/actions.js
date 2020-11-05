@@ -1,7 +1,7 @@
 import {TABLE_RESIZE, CHANGE_TEXT, CHANGE_STYLES} from './types'
 
 
-// Action Creator
+// Action Creators
 export function tableResize(data) {
   return {
     type: TABLE_RESIZE,

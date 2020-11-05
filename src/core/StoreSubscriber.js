@@ -7,19 +7,19 @@ export class StoreSubscriber {
     this.prevState = {}
   }
 
-  subscribeComponents(components) { // подписка на компоненты
-    this.prevState = this.store.getState() // предыдущий state
+  subscribeComponents(components) { // подписка на изменение state, в компонентах components
+    this.prevState = this.store.getState() // копия state
 
-    this.sub = this.store.subscribe(state => { // подписка на изменение state
-      Object.keys(state).forEach(key => { // список ключей объекта state (  rowState, colState, dataState, currentText)
+    this.sub = this.store.subscribe(state => { // добавляем подписку на изменение state
+      Object.keys(state).forEach(key => { // список ключей объекта state (rowState, colState, dataState, currentText и т.д.)
         if (!isEqual(this.prevState[key], state[key])) { // сравниваем состояние state, предыдущее и сейчас,
-          //                                             // если есть различия
+          //                                             // если есть различия по ключу key
           components.forEach(component => { // перебираем массив объектов
-            if (component.isWatching(key)) { // если ключ объекта state, есть у объекта(компоненты),
-              //                                       // в массиве параметров, передаваемых в конструктор this.subscribe
-              //                                       // каждый элемент массива, название поля в объекте state
-              const changes = {[key]: state[key]} // изменения state
-              component.storeChanged(changes) //  // запуск обработки изменений
+            if (component.isWatching(key)) { // если ключ key, есть в массиве подписок this.subscribe у компоненты,
+              //                         // передаваемом(параметр options.subscribe) в конструктор, объекта(компоненты),
+              //                         // каждый элемент массива, название поля в объекте state
+              const changes = {[key]: state[key]} // сохраняем новое значение state, для ключа key
+              component.storeChanged(changes) //  // объект "Типа" отображаем в соответствии с новым state
             }
           })
         }

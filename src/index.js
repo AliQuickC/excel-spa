@@ -9,11 +9,10 @@ import {rootReducer} from '@/redux/rootReduser'
 import {storage} from '@core/utils'
 import {initialState} from '@/redux/initialState'
 
+// в store возвращается объект, содержит набор ф-ций, для работы с приватным свойством state, загрузка данных в state
 const store = createStore(rootReducer
-    // , {colState: {}}
-    // , storage('excel-state') // прочитать store из local storage
-    , initialState // инициализация store
-)
+    , initialState // инициализация state, загрузка данных из local store,
+) //               // если данных в local store нет, инициализируем его шаблонным объектом
 
 store.subscribe(state => { // добавить обработчик события, изменение state, пишем данные в local storege
   // console.log('App State: ', state)
@@ -21,7 +20,7 @@ store.subscribe(state => { // добавить обработчик событи
 })
 
 
-// получает как свойство, элемент '#app' со страници, '#app' оборачивает в объект класса Dom
+// получает как свойство, элемент id="app" со страници, '#app' оборачивает в объект класса Dom, сохраняет в this.$el
 // получает список компонент - дочерних элементов
 const excel = new Excel('#app', {
   components: [Header, Toolbar, Formula, Table],

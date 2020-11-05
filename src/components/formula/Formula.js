@@ -29,7 +29,7 @@ export class Formula extends ExcelComponent {
     this.$formula = this.$root.find('#formula') // ищем элемент по id
 
     this.$on('table:select', $cell => { // добавить обработчик события
-      this.$formula.text($cell.text())
+      this.$formula.text($cell.text()) // при выборе ячейки в таблице, дублировать значение в формуле
       // console.log($cell.text())
     })
 

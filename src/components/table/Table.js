@@ -29,14 +29,13 @@ export class Table extends ExcelComponent {
   init() {
     super.init()
 
-    // this.$root - объект типа Dom
-    const $cell = this.$root.find('[data-id="0:0"]') // ищет ячейку в нативном элементе excel__table
-    // this.selection - объект класса TableSelection
+    // ищет ячейку в DOM элементе excel__table, this.$root - объект класса Dom
+    const $cell = this.$root.find('[data-id="0:0"]')
+    this.selectCell($cell) // делаем DOM ячейку выбранной, при открытии документа
 
-    this.selectCell($cell) // делаем ячейку выбранной
-    //                     // при открытии документа
     // this.selection.select($cell)
     // this.$emit('table:select', $cell) // событие выбор ячейки
+    // this.selection - объект класса TableSelection
 
     this.$on('formula:input', text => { // добавить обработчик события, если в формуле input
       this.selection.current.text(text) //       // обновить данные в ячейке
@@ -54,14 +53,20 @@ export class Table extends ExcelComponent {
     })
   }
 
-  // выбор ячейки
+  // выбор ячейки DOM
   selectCell($cell) {
-    this.selection.select($cell) // делаем ячейку выбранной
+    this.selection.select($cell) // делаем ячейку выбранной, $cell - объект класса Dom
+
     this.$emit('table:select', $cell) // вызов события, выбор ячейки
-    //                                      // при открытии документа
-    // console.log(Object.keys(defaultStyles))
-    const styles = $cell.getStyles(Object.keys(defaultStyles))
-    this.$dispatch(actions.changeStyles(styles))
+    // при выборе ячейки в таблице, дублировать значение в формуле
+
+    const styles = $cell.getStyles(Object.keys(defaultStyles)) // считываем стили у выбранной ячейки, в объект
+    // Object.keys(defaultStyles) - массив ключей(css свойств)
+    console.log(styles)
+
+    // сработка события, изменение state
+    this.$dispatch(actions.changeStyles(styles)) // передаем объект со стилями styles,
+    //                                           // меняем свйство currentStyles в state
   }
 
   async resizeTable(event) {

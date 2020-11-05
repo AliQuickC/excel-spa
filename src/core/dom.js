@@ -80,9 +80,10 @@ class Dom {
         })
   }
 
-  getStyles(styles = []) { // преобразует массиы стилей в объект со стилями
+  getStyles(styles = []) { // считывает css стили DOM элемента, сохраняем в объект
+    // для каждого свойства(элемента массива), считывает css значение
     return styles.reduce((res, s) => {
-      res[s] = this.$el.style[s]
+      res[s] = this.$el.style[s] // формируем объект со стилями
       return res
     }, {})
   }
@@ -100,7 +101,7 @@ class Dom {
   }
 
   focus() { // фокус на элемент при выделении
-    this.$el.focus()
+    this.$el.focus() // фокус ввода на элемент
     return this
   }
 

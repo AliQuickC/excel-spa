@@ -13,11 +13,11 @@ export class DomListener {
   initDOMListeners() {
     this.listeners.forEach(listener => { // перебор массива со списком событий
       // внутри стрелочной ф-ции, контекст this сохраняется
-      const method = getMethodName(listener) // формирование имени события
+      const method = getMethodName(listener) // формирование имени метода, из имени события
 
-      if (!this[method]) { // проверяем, что для события с именем method в объекте(DOM элемент),
-        //  есть метод, обработчик такого события
-        const name = this.name || '' // имя DOM элемента, если было указано в конструкторе, при создании
+      if (!this[method]) { // проверяем, что для события с именем method в объекте,
+        //                 // есть метод, обработчик такого события
+        const name = this.name || '' // имя элемента(компоненты), если было указано в конструкторе, при создании
         throw new Error(
             `Method ${method} is not implemented in ${name} Component`
         )
@@ -25,7 +25,7 @@ export class DomListener {
 
       this[method] = this[method].bind(this) // привязка контекста this к методу
       this.$root.on(listener, this[method]) // добавляет обрвботчик this[method], для события listener,
-      // DOM элементу(this.$root), обернутого объектом Dom
+      //                                    // DOM элементу(this.$el), обернутого объектом Dom(this.$root)
     })
   }
 
