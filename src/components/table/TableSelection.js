@@ -20,6 +20,10 @@ export class TableSelection {
     this.group = []
   }
 
+  get selectedIds() { // возвращает массив c id, выделенных ячеек
+    return this.group.map($el => $el.id())
+  }
+
   selectGroup($group = []) { // выделить группу ячеек
     this.clear()
 

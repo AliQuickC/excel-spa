@@ -20,7 +20,7 @@ export class Toolbar extends ExcelStateComponent {
   }
 
   get template() { // формирует HTML код для вывода
-    return createToolbar(this.state)
+    return createToolbar(this.state) // отрисовка тулбара из локального state
   }
 
   toHTML() { // вывод верстки тулбара с кнопками
@@ -41,7 +41,8 @@ export class Toolbar extends ExcelStateComponent {
       this.$emit('toolbar: applyStyle', value) // сработка события, изменить стиль в таблице
 
       // const key = Object.keys(value)[0] // считываем у свойства с индексом 0, название ключа(имя css свойства)
-      // this.setState({[key]: value[key]}) // меняем state, записываем в объект ключ и значение(css свойство и значение)
+      // this.setState({[key]: value[key]}) // меняем локальный state,
+      //                                 // записываем в объект ключ и значение(css свойство и значение)
       // console.log(this.state)
     }
   }

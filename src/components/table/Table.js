@@ -42,15 +42,18 @@ export class Table extends ExcelComponent {
       this.updateTextInStore(text) //            // обновление данных в state,
     }) //                                        // отобразить измененный компонент, в соответствии с измененным state
 
-    this.$on('formula:done', () => { // добавить обработчик события,
-      //                                      // при вводе в формуле Enter или Tab
+    this.$on('formula:done', () => { // добавить обработчик события, если в формуле Enter или Tab
       this.selection.current.focus()//        // смена фокуса из формулы на активную ячейку,
     })
 
-    this.$on('toolbar: applyStyle', style => { // добавляет обработчик события,
+    this.$on('toolbar: applyStyle', value => { // добавляет обработчик события,
       //                                                // изменение стиля в тулбаре, кнопками
-      this.selection.applyStyle(style) //               // применить стиль из объекта style, к выделенным ячейкам
+      this.selection.applyStyle(value) //               // применить стиль, из объекта value, к выделенным ячейкам
       // console.log('applyStyle', style)
+      this.$dispatch(actions.applyStyle({ // стили, для выделенных ячеек, сохранить в state
+        value, //                       // стиль который нужно применить к ячейкам
+        ids: this.selection.selectedIds // массив объектов, c id выделенных ячеек
+      }))
     })
   }
 

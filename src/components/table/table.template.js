@@ -1,5 +1,5 @@
+import {toInlineStyles} from '@core/utils'
 import {defaultStyles} from '@/constants'
-import {camelToDasheCase} from '@core/utils'
 
 const CODES = {
   A: 65,
@@ -24,10 +24,10 @@ function toCell(state, row) {
     const id = `${row}:${col}`
     const width = getWidth(state.colState, col) // ширина столбца + px
     const data = state.dataState[id] // содержимое ячейки
-    const styles = Object.keys(defaultStyles) // список всех стилей какие есть, преобразуем в массив
-        .map(key => `${camelToDasheCase(key)}: ${defaultStyles[key]}`) // camelToDasheCase - меняет стиль написания ключей объекта
-        //         // формируем массив строк, из "css свойство" : "значение"
-        .join(';') // собираем массив в одну строку
+    // const styles = toInlineStyles(defaultStyles) // строка со всеми стилями ячейки
+    const styles = toInlineStyles({ // строка со всеми стилями ячейки
+      ...defaultStyles, // объект с дефолтными стилями,
+      ...state.stylesState[id]}) // объект со стилями, для которых есть значеня в state
     return `
       <div 
         class="cell" 

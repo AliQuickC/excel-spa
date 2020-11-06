@@ -45,6 +45,7 @@ export class ExcelComponent extends DomListener {
 
   }
 
+  // при изменение state, проверяем наличие подписки в this.subscribe, у компоненты для ключа key
   isWatching(key) {
     return this.subscribe.includes(key)
   }
