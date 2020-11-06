@@ -57,9 +57,9 @@ export class Formula extends ExcelComponent {
 
   onKeydown(event) {
     const keys = ['Enter', 'Tab']
-    if (keys.includes(event.key)) { // если нажпата одна из кнопок 'Enter' или 'Tab'
+    if (keys.includes(event.key)) {
       event.preventDefault()
-      this.$emit('formula:done') // вызов события, смена фокуса из формулы на активную ячейку
+      this.$emit('formula:done') // вызов события
     }
   }
 }
