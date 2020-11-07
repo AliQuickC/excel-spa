@@ -41,3 +41,20 @@ export function toInlineStyles(styles = {}) {
       //         // формируем массив строк, из "css свойство" : "значение"
       .join(';') // собираем массив в одну строку
 }
+
+export function debounce(fn, wait) { //  вызов fn не более одного раза в wait
+  // блокирует вызов ф-ции fn, если появился новый вызов fn
+  let timeout // в замыкании
+  return function(...args) {
+    const later = () => {
+      clearTimeout(timeout)
+      // eslint-disable-next-line no-invalid-this
+      fn.apply(this, args)
+      // fn(...args)
+    }
+
+    clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+  }
+}
+

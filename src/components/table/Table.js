@@ -33,10 +33,6 @@ export class Table extends ExcelComponent {
     const $cell = this.$root.find('[data-id="0:0"]')
     this.selectCell($cell) // делаем DOM ячейку выбранной, при открытии документа
 
-    // this.selection.select($cell)
-    // this.$emit('table:select', $cell) // событие выбор ячейки
-    // this.selection - объект класса TableSelection
-
     this.$on('formula:input', text => { // добавить обработчик события, если в формуле input
       this.selection.current.text(text) //       // обновить данные в выделенной ячейке
       this.updateTextInStore(text) //            // обновление данных в state,
@@ -66,7 +62,6 @@ export class Table extends ExcelComponent {
 
     const styles = $cell.getStyles(Object.keys(defaultStyles)) // считываем стили у выбранной ячейки, в объект
     // styles - объект со всеми стилями для выделенной ячейки, Object.keys(defaultStyles) - массив ключей(css свойств)
-    // console.log(styles)
 
     // сработка события, изменение state
     this.$dispatch(actions.changeStyles(styles)) // передаем объект со стилями styles,
