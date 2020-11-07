@@ -97,9 +97,6 @@ export class Table extends ExcelComponent {
         this.selection.selectGroup($cells) // выделение гуппы ячеек
       } else {
         this.selectCell($target)
-        // this.selection.select($target) // выделение одной ячейки
-        // this.$emit('table:select', $target) // событие выбор ячейки !!!
-        // при клике по ячейке
       }
     }
   }
@@ -116,12 +113,7 @@ export class Table extends ExcelComponent {
       const $next = this.$root.find(nextSelector(key, id)) // определяем ячейку, куда надо перейти
 
       this.selectCell($next) // устанавливаем ячейку как выбранную
-
-      // $next элемент(ячейка) на которую осуществляется переход
-      // nextSelector определяет ячейку для перемещения после нажатия
-      // this.selection.select($next)
-      // this.$emit('table:select', $next) // событие выбор ячейки
-      // при нажатии кнопок навигации
+      //                     // $next элемент(ячейка) на которую осуществляется переход
     }
   }
 
@@ -136,7 +128,6 @@ export class Table extends ExcelComponent {
   }
 
   onInput(event) { // добавить обработчик события, input в таблице
-    // this.$emit('table:input', $(event.target)) // вызов обработки события
     this.updateTextInStore($(event.target).text()) // обновление данных в state
     //                                             // обновление данных в формуле
   }

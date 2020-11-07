@@ -28,6 +28,3 @@ export class Emiter {
   }
 }
 
-// const emiter = new Emiter()
-// emiter.subscribe('event1', data => console.log('Sub', data))
-// emiter.emit('event1', 334)

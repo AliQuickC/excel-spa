@@ -30,27 +30,14 @@ export class Formula extends ExcelComponent {
 
     this.$on('table:select', $cell => { // добавить обработчик события
       this.$formula.text($cell.text()) // при выборе ячейки в таблице, дублировать значение в формуле
-      // console.log($cell.text())
     })
-
-    // this.$on('table:input', $cell => { // добавить обработчик событий
-    //   this.$formula.text($cell.text())
-    // })
-
-    // this.$subscribe(state => { // добавить обработчик события, изменение state, меняем данные в формуле
-    //   // console.log('Formula update', state.currentText )
-    //   this.$formula.text(state.currentText) // меняем данные в формуле
-    // })
   }
 
-  storeChanged({currentText}) { // сработка события изменение state
+  storeChanged({currentText}) { //  // сработка события изменение state
     this.$formula.text(currentText) // дублимруем содержимое выделенной ячейки в формуле
-    // console.log('changes', changes)
   }
 
   onInput(event) {
-    // console.log(this.$root)
-    // console.log(event.target.textContent)
     this.$emit('formula:input', $(event.target).text()) // вызов события, при вводе в формулу,
     //                                                        // дублирует данные в ячейку таблици, обновляет state
   }
