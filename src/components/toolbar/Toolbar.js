@@ -1,40 +1,50 @@
-import {ExcelComponent} from '@core/ExcelComponent';
+import {createToolbar} from '@/components/toolbar/toolbar.template'
+import {$} from '@core/dom'
+import {ExcelStateComponent} from '@core/ExcelStateComponent'
+import {defaultStyles} from '@/constants'
 
-export class Toolbar extends ExcelComponent {
+export class Toolbar extends ExcelStateComponent {
   static className = 'excel__toolbar'
 
   constructor($root, options) {
     super($root, {
       name: 'Toolbar',
+      listeners: ['click'],
+      subscribe: ['currentStyles'], // подписка на изменение state
       ...options
     })
   }
 
-  toHTML() {
-    return `
-              <div class="button">
-        <i class="material-icons">format_align_left</i>
-      </div>
+  prepare() {
+    this.initState(defaultStyles) // инициализируем локальный state
+  }
 
-      <div class="button">
-        <i class="material-icons">format_align_center</i>
-      </div>
+  get template() { // формирует HTML код для вывода
+    return createToolbar(this.state) // отрисовка тулбара из локального state
+  }
 
-      <div class="button">
-        <i class="material-icons">format_align_right</i>
-      </div>
+  toHTML() { // вывод верстки тулбара с кнопками
+    return this.template
+  }
 
-      <div class="button">
-        <i class="material-icons">format_bold</i>
-      </div>
+  storeChanged(changes) {
+    this.setState(changes.currentStyles)
+    // console.log(changes)
+  }
 
-      <div class="button">
-        <i class="material-icons">format_italic</i>
-      </div>
+  onClick(event) {
+    const $target = $(event.target)
+    if ($target.data.type === 'button') { // если data-type === "button"
+      const value = JSON.parse($target.data.value) // data-value хранит css свойство, за которое отвечает кнопка,
+      //                                           // считываем его, преобразуем в объект
+      // console.log(value)
+      this.$emit('toolbar: applyStyle', value) // сработка события, изменить стиль в таблице
 
-      <div class="button">
-        <i class="material-icons">format_underlined</i>
-      </div>
-        `
+      // const key = Object.keys(value)[0] // считываем у свойства с индексом 0, название ключа(имя css свойства)
+      // this.setState({[key]: value[key]}) // меняем локальный state,
+      //                                 // записываем в объект ключ и значение(css свойство и значение)
+      // console.log(this.state)
+    }
   }
 }
+

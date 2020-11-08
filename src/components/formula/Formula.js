@@ -8,14 +8,14 @@ export class Formula extends ExcelComponent {
     super($root, {
       name: 'Formula',
       listeners: ['input', 'keydown'],
+      subscribe: ['currentText'], // подписка на изменение state
       ...options
     })
 
     // this.onInput = this.onInput.bind(this)
-    // this.onClick = this.onClick.bind(this)
   }
 
-  toHTML() {
+  toHTML() { // вывод верстки поля формулы
     return `
       <div class="info">fx</div>
       <div id="formula" class="input" contenteditable spellcheck="false"></div>
@@ -27,28 +27,26 @@ export class Formula extends ExcelComponent {
 
     this.$formula = this.$root.find('#formula') // ищем элемент по id
 
-    this.$on('table:select', $cell => { // добавить обработчик событий
-      this.$formula.text($cell.text())
-      // console.log($cell.text())
-    })
-
-    this.$on('table:input', $cell => { // добавить обработчик событий
-      this.$formula.text($cell.text())
+    this.$on('table:select', $cell => { // добавить обработчик события
+      //               // при выборе ячейки в таблице, показываем в формуле данные,
+      this.$formula.text($cell.data.value) //  из дата атрибута ячейки
     })
   }
 
-  // eslint-disable-next-line require-jsdoc
+  storeChanged({currentText}) { //  // сработка события изменение state
+    this.$formula.text(currentText) // дублимруем содержимое выделенной ячейки в формуле
+  }
+
   onInput(event) {
-    // console.log(this.$root)
-    // console.log(event.target.textContent)
-    this.$emit('formula:input', $(event.target).text()) // вызов события
+    this.$emit('formula:input', $(event.target).text()) // вызов события, при вводе в формулу,
+    //                                                        // дублирует данные в ячейку таблици, обновляет state
   }
 
   onKeydown(event) {
     const keys = ['Enter', 'Tab']
     if (keys.includes(event.key)) {
       event.preventDefault()
-      this.$emit('formula:done')
+      this.$emit('formula:done') // вызов события
     }
   }
 }

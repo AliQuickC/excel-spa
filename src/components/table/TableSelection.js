@@ -6,13 +6,13 @@ export class TableSelection {
     this.current = null
   }
 
-  // выделение ячейки
+  // выделение DOM ячейки
   // $el - объект класса Dom
   select($el) {
-    this.clear()
-    $el.focus().addClass(TableSelection.className)
-    this.group.push($el)
-    this.current = $el
+    this.clear() // очистка выделения ячеек
+    $el.focus().addClass(TableSelection.className) // фокус ввода на элемент, добавляем класс элементу
+    this.group.push($el) // добавляем выделенный элемент, в массив выделенных ячеек
+    this.current = $el // устанавливаем ячейку текущей
   }
 
   clear() { // очистка выделения ячеек
@@ -20,10 +20,18 @@ export class TableSelection {
     this.group = []
   }
 
-  selectGroup($group = []) {
+  get selectedIds() { // возвращает массив c id, выделенных ячеек
+    return this.group.map($el => $el.id())
+  }
+
+  selectGroup($group = []) { // выделить группу ячеек
     this.clear()
 
     this.group = $group
     this.group.forEach($el => $el.addClass(TableSelection.className))
+  }
+
+  applyStyle(style) { // применяет стили из объекта style, для выделенных ячееек this.group
+    this.group.forEach($el => $el.css(style))
   }
 }

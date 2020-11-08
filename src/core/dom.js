@@ -15,13 +15,13 @@ class Dom {
     return this.$el.outerHTML.trim()
   }
 
-  text(text) {
-    if (typeof text === 'string') {
-      this.$el.textContent = text
+  text(text) { // заполняет содержимое элемента текстом
+    if (typeof text !== 'undefined') { // если в элемент введен текст
+      this.$el.textContent = text //  меняем свойство textContent (текстовое содержимое элемента)
       return this
     }
-    if (this.$el.tagName.toLowerCase() == 'input') {
-      return this.$el.value.trim()
+    if (this.$el.tagName.toLowerCase() === 'input') { // если элемент типа input
+      return this.$el.value.trim() //                // меняем свойство value
     }
     return this.$el.textContent.trim()
   }
@@ -80,21 +80,37 @@ class Dom {
         })
   }
 
+  getStyles(styles = []) { // считывает css стили DOM элемента, сохраняем в объект
+    // для каждого свойства(элемента массива), считывает css значение
+    return styles.reduce((res, s) => {
+      res[s] = this.$el.style[s] // формируем объект со стилями
+      return res
+    }, {})
+  }
+
   id(parse) {
-    if (parse) { // если true
-      const parsed = this.id().split(':')
+    if (parse) { // если true, возвращаем объект с координатами ячейки
+      const parsed = this.id().split(':') // разбираем строку на массив
       return { // объект с координатами ячейки
         row: +parsed[0],
         col: +parsed[1]
       }
     }
     // data - геттер
-    return this.data.id // дата атрибуту id
+    return this.data.id // считываем и возвращаем, дата атрибут data-id
   }
 
   focus() { // фокус на элемент при выделении
-    this.$el.focus()
+    this.$el.focus() // фокус ввода на элемент
     return this
+  }
+
+  attr(name, value) { // геттер/сеттер считывает/меняет атрибут name
+    if (value) {
+      this.$el.setAttribute(name, value)
+      return this
+    }
+    return this.$el.getAttribute(name)
   }
 
   addClass(className) {
