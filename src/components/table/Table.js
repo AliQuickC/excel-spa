@@ -6,6 +6,7 @@ import {isCell, matrix, nextSelector, shouldResize} from '@/components/table/tab
 import {TableSelection} from '@/components/table/TableSelection'
 import * as actions from '@/redux/actions'
 import {defaultStyles} from '@/constants'
+import {parse} from '@core/parse'
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
@@ -33,10 +34,12 @@ export class Table extends ExcelComponent {
     const $cell = this.$root.find('[data-id="0:0"]')
     this.selectCell($cell) // делаем DOM ячейку выбранной, при открытии документа
 
-    this.$on('formula:input', text => { // добавить обработчик события, если в формуле input
-      this.selection.current.text(text) //       // обновить данные в выделенной ячейке
-      this.updateTextInStore(text) //            // обновление данных в state,
-    }) //                                        // отобразить измененный компонент, в соответствии с измененным state
+    this.$on('formula:input', value => { // добавить обработчик события, если в формуле input
+      this.selection.current
+          .attr('data-value', value) // присвоить значение дата атрибуту выбранной ячейки
+          .text(parse(value)) //     // обновить данные в выделенной ячейке
+      this.updateTextInStore(value) // обновление данных в state,
+    }) //                           // отобразить измененный компонент, в соответствии с измененным state
 
     this.$on('formula:done', () => { // добавить обработчик события, если в формуле Enter или Tab
       this.selection.current.focus()//        // смена фокуса из формулы на активную ячейку,

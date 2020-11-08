@@ -13,7 +13,6 @@ export class Formula extends ExcelComponent {
     })
 
     // this.onInput = this.onInput.bind(this)
-    // this.onClick = this.onClick.bind(this)
   }
 
   toHTML() { // вывод верстки поля формулы
@@ -29,7 +28,8 @@ export class Formula extends ExcelComponent {
     this.$formula = this.$root.find('#formula') // ищем элемент по id
 
     this.$on('table:select', $cell => { // добавить обработчик события
-      this.$formula.text($cell.text()) // при выборе ячейки в таблице, дублировать значение в формуле
+      //               // при выборе ячейки в таблице, показываем в формуле данные,
+      this.$formula.text($cell.data.value) //  из дата атрибута ячейки
     })
   }
 

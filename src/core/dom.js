@@ -16,7 +16,7 @@ class Dom {
   }
 
   text(text) { // заполняет содержимое элемента текстом
-    if (typeof text === 'string') { // если в элемент введен текст
+    if (typeof text !== 'undefined') { // если в элемент введен текст
       this.$el.textContent = text //  меняем свойство textContent (текстовое содержимое элемента)
       return this
     }
@@ -103,6 +103,14 @@ class Dom {
   focus() { // фокус на элемент при выделении
     this.$el.focus() // фокус ввода на элемент
     return this
+  }
+
+  attr(name, value) { // геттер/сеттер считывает/меняет атрибут name
+    if (value) {
+      this.$el.setAttribute(name, value)
+      return this
+    }
+    return this.$el.getAttribute(name)
   }
 
   addClass(className) {
