@@ -1,5 +1,5 @@
 import {$} from '@core/dom'
-// import {ActiveRouter} from '@core/routes/ActiveRouter'
+import {ActiveRoute} from '@core/routes/ActiveRoute'
 
 export class Router {
   constructor(selector, routes) {
@@ -9,6 +9,8 @@ export class Router {
 
     this.$placeholder = $(selector)
     this.routes = routes
+
+    this.page = null
 
     this.changePageHandler = this.changePageHandler.bind(this)
 
@@ -21,15 +23,24 @@ export class Router {
   }
 
   changePageHandler() {
-    // console.log(ActiveRouter.path)
-    // console.log('param', ActiveRouter.param)
+    if (this.page) {
+      this.page.destroy()
+    }
+    this.$placeholder.clear() // очистка содержимого
 
-    // this.$placeholder.html('<h1>' + ActiveRouter.path + '</h1>')
+    const Page = ActiveRoute.path.includes('excel') ? // определяем какую страницу грузить
+      this.routes.excel :
+      this.routes.dashboard
 
-    const Page = this.routes.excel // класс выводит верстку
-    const page = new Page()
-    this.$placeholder.append(page.getRoot()) // вставляем верстку в корневой элемент '#app'
-    page.afterRender()
+    // const Page = this.routes.excel // класс выводит верстку
+    // const Page = this.routes.dashboard // класс выводит верстку
+
+    this.page = new Page(ActiveRoute.param) // создание страници,
+    //                             // param - параметром передаются данные из адресной строки
+
+    this.$placeholder.append(this.page.getRoot()) // вставляем верстку в корневой элемент '#app'
+
+    this.page.afterRender() // отрисовка вставленного содержимого
   }
 
   destroy() {
