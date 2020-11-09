@@ -1,6 +1,7 @@
 import {$} from '@core/dom'
 import {Emiter} from '@core/Emiter'
 import {StoreSubscriber} from '@core/StoreSubscriber'
+import {updateDate} from '@/redux/actions';
 
 export class Excel {
   constructor(options) {
@@ -51,6 +52,8 @@ export class Excel {
     // предварительно компонент Excel заполняется дочерними компонентами,
     // в this.components вместо строк сохраняются объекты "Типа"
     // append метод класса Dom
+
+    this.store.dispatch(updateDate())
 
     this.subscriber.subscribeComponents(this.components) // подписываемся на изменение state компоненты
 
