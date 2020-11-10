@@ -16,7 +16,7 @@ export function range(start, end) {
       .map((_, index) => start + index)
 }
 
-export function storage(key, data = null) {
+export function storage(key, data = null) { // читает/пишет в locale storage
   if (!data) { //                                // если параметр data не указан
     return JSON.parse(localStorage.getItem(key)) // считываем значение 'excel-state'
   } //                                            // иначе если data есть
@@ -58,3 +58,6 @@ export function debounce(fn, wait) { //  вызов fn не более одно�
   }
 }
 
+export function clone(obj) { // клонируем объект
+  return JSON.parse(JSON.stringify(obj))
+}

@@ -1,10 +1,11 @@
 import {$} from '@core/dom'
 import {Emiter} from '@core/Emiter'
 import {StoreSubscriber} from '@core/StoreSubscriber'
+import {updateDate} from '@/redux/actions';
 
 export class Excel {
-  constructor(selector, options) {
-    this.$el = $(selector) // находит элемент '#app' со страници, оборачивает в объект класса Dom
+  constructor(options) {
+    // this.$el = $(selector) // находит элемент '#app' со страници, оборачивает в объект класса Dom
     this.components = options.components || [] // массив классов элементов(компонентов),
     // которые будут добавлены внутрь текущего элемента
     // после запуска getRoot() элементы массива превращаются в объекты
@@ -45,12 +46,14 @@ export class Excel {
     return $root // компонент class="excel", обернутый в объект класса Dom
   }
 
-  render() {
+  init() {
     // вставляет DOM элемент Excel на страниуцу, в корневой элемент '#app'(this.$el),
-    this.$el.append(this.getRoot()) // this.getRoot() - возвращает Excel, обернутый в объект класса Dom
+    // this.$el.append(this.getRoot()) // this.getRoot() - возвращает Excel, обернутый в объект класса Dom
     // предварительно компонент Excel заполняется дочерними компонентами,
     // в this.components вместо строк сохраняются объекты "Типа"
     // append метод класса Dom
+
+    this.store.dispatch(updateDate())
 
     this.subscriber.subscribeComponents(this.components) // подписываемся на изменение state компоненты
 
