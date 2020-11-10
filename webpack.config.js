@@ -1,4 +1,5 @@
 const path = require('path')
+// const webpack = require('webpack')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
@@ -32,7 +33,6 @@ const jsLoaders = () => { // запуск лоадеров
   return loaders // возвращаем массив с настройками лоадера
 }
 
-
 module.exports = {
   context: path.resolve(__dirname, 'src'), // контекст работы webpack
   mode: 'development', // режим разработки
@@ -59,7 +59,7 @@ module.exports = {
     hot: isDev
   },
 
-  // настройка дополнительныхплагинов
+  // настройка дополнительных плагинов
   plugins: [
     new CleanWebpackPlugin(), // чистит папку dist, перед новой сборкой
     new HTMLWebpackPlugin({
@@ -78,6 +78,9 @@ module.exports = {
       filename: filename('css') // css файл куда будут собираться все стили
     })
   ],
+  // new webpack.DefinePlugin({
+  //   'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+  // }),
 
   // лоадеры
   // отслеживают файлы с указанным расширение
